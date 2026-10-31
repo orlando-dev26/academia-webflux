@@ -1,0 +1,259 @@
+{
+  "alcance": "Pruebas manuales aportadas por el alumno; independiente de la bateria Java",
+  "coleccion_ejecutada_completamente": false,
+  "evidencias": [
+    {
+      "archivo": "02-login-anotado.png",
+      "metodo": "POST",
+      "ruta": "/login",
+      "estado_http": 200,
+      "pruebas_visibles": [
+        "HTTP 200: PASSED",
+        "JWT recibido: PASSED"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "archivo": "03-login-funcional.png",
+      "metodo": "POST",
+      "ruta": "/v2/login",
+      "estado_http": 200,
+      "pruebas_visibles": [
+        "HTTP 200: PASSED",
+        "JWT recibido: PASSED"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "archivo": "04-estudiante-creado-v1.png",
+      "metodo": "POST",
+      "ruta": "/v1/estudiantes",
+      "estado_http": 201,
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "campos_visibles": [
+        "id",
+        "nombres",
+        "apellidos",
+        "dni",
+        "edad"
+      ],
+      "datos_ficticios": {
+        "nombres": "Ana Evidencia v1",
+        "apellidos": "Perez",
+        "dni": "00123456",
+        "edad": 18
+      },
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "archivo": "aux-estudiante-comparacion-v1.png",
+      "categoria": "preparacion_de_datos",
+      "metodo": "POST",
+      "ruta": "/v1/estudiantes",
+      "estado_http": 201,
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "campos_visibles": [
+        "id",
+        "nombres",
+        "apellidos",
+        "dni",
+        "edad"
+      ],
+      "datos_ficticios": {
+        "nombres": "Bruno Evidencia v1",
+        "apellidos": "Perez",
+        "dni": "00234567",
+        "edad": 30
+      },
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "archivo": "07-edad-asc-v1.png",
+      "categoria": "principal",
+      "metodo": "GET",
+      "ruta": "/v1/estudiantes/edad/asc",
+      "estado_http": 200,
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "edades_visibles": [
+        18,
+        18,
+        18,
+        24,
+        30
+      ],
+      "listado_completo_visible": false,
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "archivo": "08-edad-desc-v2.png",
+      "categoria": "principal",
+      "metodo": "GET",
+      "ruta": "/v2/estudiantes/edad/desc",
+      "estado_http": 200,
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "edades_visibles": [
+        30,
+        30,
+        24,
+        18,
+        18
+      ],
+      "listado_completo_visible": false,
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "archivo": "05-curso-creado-v1.png",
+      "categoria": "principal",
+      "metodo": "POST",
+      "ruta": "/v1/cursos",
+      "estado_http": 201,
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "campos_visibles": [
+        "id",
+        "nombre",
+        "siglas",
+        "estado"
+      ],
+      "datos_ficticios": {
+        "nombre": "Spring WebFlux Evidencia v1",
+        "siglas": "SWF",
+        "estado": true
+      },
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    },
+    {
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada",
+      "archivo": "aux-segundo-curso-v1.png",
+      "categoria": "preparacion_de_datos",
+      "metodo": "POST",
+      "ruta": "/v1/cursos",
+      "estado_http": 201,
+      "campos_visibles": [
+        "id",
+        "nombre",
+        "siglas",
+        "estado"
+      ],
+      "datos_ficticios": {
+        "nombre": "MongoDB Evidencia v1",
+        "siglas": "MDB",
+        "estado": false
+      }
+    },
+    {
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada",
+      "archivo": "06-matricula-v1.png",
+      "categoria": "principal",
+      "metodo": "POST",
+      "ruta": "/v1/matriculas",
+      "estado_http": 201,
+      "campos_visibles": [
+        "id",
+        "fechaMatricula",
+        "estudiante",
+        "cursos",
+        "estado"
+      ],
+      "fechaMatricula_visible": "2026-10-30T10:30:00",
+      "estudiante_completo_visible": true,
+      "cantidad_cursos_completos_visibles": 2,
+      "estados_cursos_visibles": [
+        true,
+        false
+      ],
+      "estado_matricula_visible": true,
+      "documento_respuesta_completo_visible": true
+    },
+    {
+      "archivo": "09-sin-token-v2.png",
+      "categoria": "principal",
+      "metodo": "GET",
+      "ruta": "/v2/estudiantes",
+      "autenticacion": "sin token",
+      "estado_http": 401,
+      "pruebas_visibles": [
+        "Test Results 2/2"
+      ],
+      "aprobadas": 2,
+      "total": 2,
+      "campos_error_visibles": [
+        "datetime",
+        "message"
+      ],
+      "mensaje_visible": "Autenticacion requerida o credenciales invalidas",
+      "fecha_error_visible": "2026-10-30T22:23:45.873432",
+      "origen": "Captura real compartida por el alumno en el chat",
+      "imagen_modificada": false,
+      "password_y_token_completo_no_visibles": true,
+      "estado": "validada"
+    }
+  ],
+  "plan_principal": {
+    "imagenes_previstas": 8,
+    "imagenes_principales_validadas": 8,
+    "imagenes_principales_pendientes": 0,
+    "criterio": "Seleccion de evidencias principales, solicitada por el alumno; cobertura completa mantenida en fuentes, coleccion y pruebas Java."
+  },
+  "recorrido_reducido_completado": true
+}

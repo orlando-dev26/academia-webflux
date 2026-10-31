@@ -1,0 +1,89 @@
+# IntelliJ HTTP Client. Sustituir variables localmente; no guardar tokens reales en Git.
+@base = http://localhost:8080
+@v = v1
+@username = admin
+@password = REEMPLAZAR_CON_PASSWORD_DE_LOCAL_ACCESO
+@token = REEMPLAZAR_CON_ACCESS_TOKEN_DEL_LOGIN
+@estudianteId = REEMPLAZAR_CON_ID_REAL
+@cursoId = REEMPLAZAR_CON_ID_REAL
+@matriculaId = REEMPLAZAR_CON_ID_REAL
+
+### Login: para funcional cambiar /login por /v2/login
+POST {{base}}/login
+Content-Type: application/json
+
+{"username":"{{username}}","password":"{{password}}"}
+
+### Crear estudiante; repetir con v2 cambiando @v
+POST {{base}}/{{v}}/estudiantes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nombres":"Ana","apellidos":"Perez","dni":"00123456","edad":24}
+
+### Listar estudiantes
+GET {{base}}/{{v}}/estudiantes
+Authorization: Bearer {{token}}
+
+### Consultar estudiante
+GET {{base}}/{{v}}/estudiantes/{{estudianteId}}
+Authorization: Bearer {{token}}
+
+### Actualizar estudiante
+PUT {{base}}/{{v}}/estudiantes/{{estudianteId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nombres":"Ana Maria","apellidos":"Perez","dni":"00123456","edad":25}
+
+### Edad ascendente
+GET {{base}}/{{v}}/estudiantes/edad/asc
+Authorization: Bearer {{token}}
+
+### Edad descendente
+GET {{base}}/{{v}}/estudiantes/edad/desc
+Authorization: Bearer {{token}}
+
+### Crear curso
+POST {{base}}/{{v}}/cursos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nombre":"Spring WebFlux","siglas":"SWF","estado":true}
+
+### Listar cursos
+GET {{base}}/{{v}}/cursos
+Authorization: Bearer {{token}}
+
+### Consultar curso
+GET {{base}}/{{v}}/cursos/{{cursoId}}
+Authorization: Bearer {{token}}
+
+### Actualizar curso
+PUT {{base}}/{{v}}/cursos/{{cursoId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nombre":"Spring WebFlux AI","siglas":"SWF","estado":false}
+
+### Registrar matrícula con referencias reales
+POST {{base}}/{{v}}/matriculas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"fechaMatricula":"2026-10-30T10:30:00","estudiante":{"id":"{{estudianteId}}"},"cursos":[{"id":"{{cursoId}}"}],"estado":true}
+
+### Consultar matrícula histórica
+GET {{base}}/{{v}}/matriculas/{{matriculaId}}
+Authorization: Bearer {{token}}
+
+### Borrar curso (después de comprobar la matrícula)
+DELETE {{base}}/{{v}}/cursos/{{cursoId}}
+Authorization: Bearer {{token}}
+
+### Borrar estudiante
+DELETE {{base}}/{{v}}/estudiantes/{{estudianteId}}
+Authorization: Bearer {{token}}
+
+### Acceso sin JWT: debe devolver 401
+GET {{base}}/{{v}}/cursos

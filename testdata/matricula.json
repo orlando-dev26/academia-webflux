@@ -1,0 +1,15 @@
+{
+  "fechaMatricula": "2026-10-30T10:30:00",
+  "estudiante": {
+    "id": "ESTUDIANTE_1"
+  },
+  "cursos": [
+    {
+      "id": "CURSO_1"
+    },
+    {
+      "id": "CURSO_2"
+    }
+  ],
+  "estado": true
+}

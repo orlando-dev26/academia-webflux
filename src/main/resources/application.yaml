@@ -1,0 +1,24 @@
+spring:
+  config:
+    import: optional:file:./.local/application-local.yaml
+  application:
+    name: academia-webflux
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://localhost:27017/academia_db}
+  data:
+    mongodb:
+      auto-index-creation: true
+
+server:
+  port: ${PORT:8080}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:}
+    expiration: ${JWT_EXPIRATION:PT1H}
+
+app:
+  bootstrap:
+    enabled: ${BOOTSTRAP_ENABLED:false}
+    username: ${BOOTSTRAP_USERNAME:admin}
+    password: ${BOOTSTRAP_PASSWORD:}

@@ -1,0 +1,26 @@
+[
+  {
+    "nombres": "Ana",
+    "apellidos": "Perez",
+    "dni": "00123456",
+    "edad": 18
+  },
+  {
+    "nombres": "Bruno",
+    "apellidos": "Garcia",
+    "dni": "00234567",
+    "edad": 30
+  },
+  {
+    "nombres": "Carla",
+    "apellidos": "Lopez",
+    "dni": "00345678",
+    "edad": 24
+  },
+  {
+    "nombres": "Diego",
+    "apellidos": "Torres",
+    "dni": "00456789",
+    "edad": 18
+  }
+]

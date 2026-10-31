@@ -1,0 +1,2067 @@
+{
+  "info": {
+    "name": "Academia WebFlux - Evaluacion final",
+    "description": "Peticiones locales preparadas para pruebas guiadas y capturas reales. El avance de las pruebas manuales se documenta en docs/evidencias/registro.json; no se presume ejecucion completa. No publicar valores locales de password/token. Ejecutar en orden; la carpeta 04 elimina unicamente los maestros creados por esta coleccion.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "admin",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "string",
+      "description": "Completar solo en la copia local de Postman; no publicar."
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "El login lo completa. No publicar su valor."
+    },
+    {
+      "key": "v1_estudianteId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v1_estudianteAuxId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v1_cursoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v1_cursoAuxId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v1_matriculaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v2_estudianteId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v2_estudianteAuxId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v2_cursoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v2_cursoAuxId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "v2_matriculaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "credencialDePrueba",
+      "value": "invalido",
+      "type": "string",
+      "description": "Texto ficticio para comprobar el rechazo 401; no es un secreto."
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Autenticacion",
+      "item": [
+        {
+          "name": "01 - Login anotado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/login",
+            "description": "Primera prueba: completar password en Variables de la coleccion. Capturar Test Results para no publicar el token.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"JWT recibido\", function () {",
+                  "    pm.expect(data.access_token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.access_token.split(\".\")).to.have.lengthOf(3);",
+                  "  });",
+                  "  pm.collectionVariables.set(\"token\", data.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "02 - Login funcional",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/login",
+            "description": "Primera prueba: completar password en Variables de la coleccion. Capturar Test Results para no publicar el token.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"JWT recibido\", function () {",
+                  "    pm.expect(data.access_token).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.access_token.split(\".\")).to.have.lengthOf(3);",
+                  "  });",
+                  "  pm.collectionVariables.set(\"token\", data.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Anotaciones v1",
+      "item": [
+        {
+          "name": "01 - Crear estudiante principal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Ana Evidencia v1\",\n  \"apellidos\": \"Perez\",\n  \"dni\": \"00123456\",\n  \"edad\": 18\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v1_estudianteId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v1_estudianteId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "02 - Crear estudiante para comparar edades",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Bruno Evidencia v1\",\n  \"apellidos\": \"Perez\",\n  \"dni\": \"00234567\",\n  \"edad\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v1_estudianteAuxId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v1_estudianteAuxId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "03 - Listar estudiantes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Listado persistido\", function () { pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.some(function(e) { return e.id === pm.collectionVariables.get(\"v1_estudianteId\"); })).to.eql(true);",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "04 - Consultar estudiante por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes/{{v1_estudianteId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "05 - Actualizar estudiante",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes/{{v1_estudianteId}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Ana Evidencia v1\",\n  \"apellidos\": \"Perez Actualizado\",\n  \"dni\": \"00123456\",\n  \"edad\": 22\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "  pm.test(\"Actualizacion persistida\", function () { pm.expect(data.edad).to.eql(22); pm.expect(data.apellidos).to.eql(\"Perez Actualizado\"); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "06 - Edad asc",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes/edad/asc",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Orden real de todas las edades\", function () {",
+                  "    pm.expect(data).to.be.an(\"array\").with.lengthOf.at.least(2);",
+                  "    for (let i=1; i<data.length; i++) { pm.expect(data[i-1].edad <= data[i].edad).to.eql(true); }",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "07 - Edad desc",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes/edad/desc",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Orden real de todas las edades\", function () {",
+                  "    pm.expect(data).to.be.an(\"array\").with.lengthOf.at.least(2);",
+                  "    for (let i=1; i<data.length; i++) { pm.expect(data[i-1].edad >= data[i].edad).to.eql(true); }",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "08 - Crear curso principal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Spring WebFlux Evidencia v1\",\n  \"siglas\": \"SWF\",\n  \"estado\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v1_cursoId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v1_cursoId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "09 - Crear segundo curso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"MongoDB Evidencia v1\",\n  \"siglas\": \"MDB\",\n  \"estado\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v1_cursoAuxId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v1_cursoAuxId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "10 - Listar cursos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Listado de cursos\", function () { pm.expect(data).to.be.an(\"array\"); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "11 - Consultar curso por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos/{{v1_cursoId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "12 - Actualizar curso",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos/{{v1_cursoId}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Spring WebFlux Actualizado v1\",\n  \"siglas\": \"SWF\",\n  \"estado\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.test(\"Estado false conservado\", function () { pm.expect(data.estado).to.eql(false); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "13 - Registrar matricula",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/matriculas",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaMatricula\": \"2026-10-30T10:30:00\",\n  \"estudiante\": {\n    \"id\": \"{{v1_estudianteId}}\"\n  },\n  \"cursos\": [\n    {\n      \"id\": \"{{v1_cursoId}}\"\n    },\n    {\n      \"id\": \"{{v1_cursoAuxId}}\"\n    }\n  ],\n  \"estado\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v1_matriculaId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Matricula con objetos completos\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"fechaMatricula\",\"estudiante\",\"cursos\",\"estado\");",
+                  "    pm.expect(data.estudiante.id).to.eql(pm.collectionVariables.get(\"v1_estudianteId\"));",
+                  "    pm.expect(data.estudiante.nombres).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.cursos).to.have.lengthOf(2);",
+                  "    data.cursos.forEach(function (curso) { pm.expect(curso.nombre).to.be.a(\"string\").and.not.empty; });",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v1_matriculaId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "14 - Consultar matricula completa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/matriculas/{{v1_matriculaId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Matricula con objetos completos\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"fechaMatricula\",\"estudiante\",\"cursos\",\"estado\");",
+                  "    pm.expect(data.estudiante.id).to.eql(pm.collectionVariables.get(\"v1_estudianteId\"));",
+                  "    pm.expect(data.estudiante.nombres).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.cursos).to.have.lengthOf(2);",
+                  "    data.cursos.forEach(function (curso) { pm.expect(curso.nombre).to.be.a(\"string\").and.not.empty; });",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "15 - Validacion de entrada",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"\",\n  \"apellidos\": \"Prueba\",\n  \"dni\": \"\",\n  \"edad\": -1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "if (pm.response.code === 400) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "16 - Recurso inexistente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos/no-existe-evidencia",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });",
+                  "if (pm.response.code === 404) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "17 - Sin token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+                  "if (pm.response.code === 401) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "18 - Token invalido",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{credencialDePrueba}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+                  "if (pm.response.code === 401) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Funcionales v2",
+      "item": [
+        {
+          "name": "01 - Crear estudiante principal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Ana Evidencia v2\",\n  \"apellidos\": \"Perez\",\n  \"dni\": \"00123456\",\n  \"edad\": 18\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v2_estudianteId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v2_estudianteId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "02 - Crear estudiante para comparar edades",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Bruno Evidencia v2\",\n  \"apellidos\": \"Perez\",\n  \"dni\": \"00234567\",\n  \"edad\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v2_estudianteAuxId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v2_estudianteAuxId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "03 - Listar estudiantes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Listado persistido\", function () { pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.some(function(e) { return e.id === pm.collectionVariables.get(\"v2_estudianteId\"); })).to.eql(true);",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "04 - Consultar estudiante por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes/{{v2_estudianteId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "05 - Actualizar estudiante",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes/{{v2_estudianteId}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"Ana Evidencia v2\",\n  \"apellidos\": \"Perez Actualizado\",\n  \"dni\": \"00123456\",\n  \"edad\": 22\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del estudiante\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombres\",\"apellidos\",\"dni\",\"edad\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.dni).to.be.a(\"string\");",
+                  "    pm.expect(data.edad).to.be.a(\"number\");",
+                  "  });",
+                  "  pm.test(\"Actualizacion persistida\", function () { pm.expect(data.edad).to.eql(22); pm.expect(data.apellidos).to.eql(\"Perez Actualizado\"); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "06 - Edad asc",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes/edad/asc",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Orden real de todas las edades\", function () {",
+                  "    pm.expect(data).to.be.an(\"array\").with.lengthOf.at.least(2);",
+                  "    for (let i=1; i<data.length; i++) { pm.expect(data[i-1].edad <= data[i].edad).to.eql(true); }",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "07 - Edad desc",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes/edad/desc",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Orden real de todas las edades\", function () {",
+                  "    pm.expect(data).to.be.an(\"array\").with.lengthOf.at.least(2);",
+                  "    for (let i=1; i<data.length; i++) { pm.expect(data[i-1].edad >= data[i].edad).to.eql(true); }",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "08 - Crear curso principal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Spring WebFlux Evidencia v2\",\n  \"siglas\": \"SWF\",\n  \"estado\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v2_cursoId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v2_cursoId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "09 - Crear segundo curso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"MongoDB Evidencia v2\",\n  \"siglas\": \"MDB\",\n  \"estado\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v2_cursoAuxId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v2_cursoAuxId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "10 - Listar cursos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Listado de cursos\", function () { pm.expect(data).to.be.an(\"array\"); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "11 - Consultar curso por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos/{{v2_cursoId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "12 - Actualizar curso",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos/{{v2_cursoId}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Spring WebFlux Actualizado v2\",\n  \"siglas\": \"SWF\",\n  \"estado\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Campos completos del curso\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"nombre\",\"siglas\",\"estado\");",
+                  "    pm.expect(data.id).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.test(\"Estado false conservado\", function () { pm.expect(data.estado).to.eql(false); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "13 - Registrar matricula",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/matriculas",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaMatricula\": \"2026-10-30T10:30:00\",\n  \"estudiante\": {\n    \"id\": \"{{v2_estudianteId}}\"\n  },\n  \"cursos\": [\n    {\n      \"id\": \"{{v2_cursoId}}\"\n    },\n    {\n      \"id\": \"{{v2_cursoAuxId}}\"\n    }\n  ],\n  \"estado\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.unset(\"v2_matriculaId\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Matricula con objetos completos\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"fechaMatricula\",\"estudiante\",\"cursos\",\"estado\");",
+                  "    pm.expect(data.estudiante.id).to.eql(pm.collectionVariables.get(\"v2_estudianteId\"));",
+                  "    pm.expect(data.estudiante.nombres).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.cursos).to.have.lengthOf(2);",
+                  "    data.cursos.forEach(function (curso) { pm.expect(curso.nombre).to.be.a(\"string\").and.not.empty; });",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "  pm.collectionVariables.set(\"v2_matriculaId\", data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "14 - Consultar matricula completa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/matriculas/{{v2_matriculaId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Matricula con objetos completos\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"fechaMatricula\",\"estudiante\",\"cursos\",\"estado\");",
+                  "    pm.expect(data.estudiante.id).to.eql(pm.collectionVariables.get(\"v2_estudianteId\"));",
+                  "    pm.expect(data.estudiante.nombres).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.cursos).to.have.lengthOf(2);",
+                  "    data.cursos.forEach(function (curso) { pm.expect(curso.nombre).to.be.a(\"string\").and.not.empty; });",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "15 - Validacion de entrada",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombres\": \"\",\n  \"apellidos\": \"Prueba\",\n  \"dni\": \"\",\n  \"edad\": -1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "if (pm.response.code === 400) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "16 - Recurso inexistente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos/no-existe-evidencia",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });",
+                  "if (pm.response.code === 404) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "17 - Sin token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+                  "if (pm.response.code === 401) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "18 - Token invalido",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{credencialDePrueba}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+                  "if (pm.response.code === 401) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Error JSON comun\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"datetime\", \"message\");",
+                  "    pm.expect(data.datetime).to.be.a(\"string\");",
+                  "    pm.expect(data.message).to.be.a(\"string\").and.not.empty;",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Borrados de nuestros registros y consulta historica (al final)",
+      "item": [
+        {
+          "name": "v1 - Eliminar v1_estudianteId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes/{{v1_estudianteId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v1 - Eliminar v1_estudianteAuxId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/estudiantes/{{v1_estudianteAuxId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v1 - Eliminar v1_cursoId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos/{{v1_cursoId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v1 - Eliminar v1_cursoAuxId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/cursos/{{v1_cursoAuxId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v1 - Matricula conserva historico",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v1/matriculas/{{v1_matriculaId}}",
+            "description": "Consulta despues de eliminar los maestros creados por esta coleccion. La matricula se conserva."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Matricula con objetos completos\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"fechaMatricula\",\"estudiante\",\"cursos\",\"estado\");",
+                  "    pm.expect(data.estudiante.id).to.eql(pm.collectionVariables.get(\"v1_estudianteId\"));",
+                  "    pm.expect(data.estudiante.nombres).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.cursos).to.have.lengthOf(2);",
+                  "    data.cursos.forEach(function (curso) { pm.expect(curso.nombre).to.be.a(\"string\").and.not.empty; });",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v2 - Eliminar v2_estudianteId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes/{{v2_estudianteId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v2 - Eliminar v2_estudianteAuxId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/estudiantes/{{v2_estudianteAuxId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v2 - Eliminar v2_cursoId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos/{{v2_cursoId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v2 - Eliminar v2_cursoAuxId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/cursos/{{v2_cursoAuxId}}",
+            "description": "Elimina solo el registro cuyo ID guardo esta coleccion al crearlo. Ejecutar al terminar las capturas positivas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "v2 - Matricula conserva historico",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/v2/matriculas/{{v2_matriculaId}}",
+            "description": "Consulta despues de eliminar los maestros creados por esta coleccion. La matricula se conserva."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.test(\"Matricula con objetos completos\", function () {",
+                  "    pm.expect(data).to.have.all.keys(\"id\",\"fechaMatricula\",\"estudiante\",\"cursos\",\"estado\");",
+                  "    pm.expect(data.estudiante.id).to.eql(pm.collectionVariables.get(\"v2_estudianteId\"));",
+                  "    pm.expect(data.estudiante.nombres).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(data.cursos).to.have.lengthOf(2);",
+                  "    data.cursos.forEach(function (curso) { pm.expect(curso.nombre).to.be.a(\"string\").and.not.empty; });",
+                  "    pm.expect(data.estado).to.be.a(\"boolean\");",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ]
+}

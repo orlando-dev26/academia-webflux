@@ -1,0 +1,49 @@
+{
+  "ejecucion": "2026-10-30T21:09:25-05:00",
+  "comando": "scripts/verificar.ps1 -Mode verify",
+  "resultado": "BUILD SUCCESS",
+  "origen": "target/surefire-reports/TEST-*.xml",
+  "totales": {
+    "tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "clases": [
+    {
+      "clase": "com.orlandini.academiawebflux.AcademiaApiIntegrationTest",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "clase": "com.orlandini.academiawebflux.AcademiaWebfluxApplicationTests",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "clase": "com.orlandini.academiawebflux.CRUDImplTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "clase": "com.orlandini.academiawebflux.MapperValidationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "clase": "com.orlandini.academiawebflux.SecurityContextRepositoryTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ]
+}

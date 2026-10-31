@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "Spring WebFlux",
+    "siglas": "SWF",
+    "estado": true
+  },
+  {
+    "nombre": "MongoDB reactivo",
+    "siglas": "MDB",
+    "estado": true
+  },
+  {
+    "nombre": "Fundamentos de Java",
+    "siglas": "JAVA",
+    "estado": false
+  }
+]
